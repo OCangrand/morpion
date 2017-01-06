@@ -35,6 +35,12 @@ class grid:
             print("|",symbols[self.cells[i*3]], "|",  symbols[self.cells[i*3+1]], "|",  symbols[self.cells[i*3+2]], "|");
             print("-------------")
 
+    def displayInOneString(self):
+        grid = "-------------\n"
+        for i in range(3):
+            grid = grid + "| " + symbols[self.cells[i*3]] + " | " + symbols[self.cells[i*3+1]] + " | " + symbols[self.cells[i*3+2]] + " |\n" + "-------------\n"
+        return grid
+
 
     """ Test if 'player' wins the game"""
     def winner(self, player):
