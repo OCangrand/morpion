@@ -36,21 +36,19 @@ def main():
                     l.append(newS)
                     if joueur1 == None:
                         joueur1 = newS
-                        joueur1.send(b"Bonjour, vous etes le joueur 1\n")
+                        joueur1.send(str.encode("Bonjour, vous etes le joueur 1\n"))
                     elif joueur2 ==None:
                         joueur2 = newS
-                        joueur2.send(b"Bonjour, vous etes le joueur 2\n")
+                        joueur2.send(str.encode("Bonjour, vous etes le joueur 2\n"))
                         gameStart = True
-                        #joueur1.send(bytearray(grids[J1].displayInOneString(), 'utf8'))
-                        #joueur1.send(b"Joueur 1, quelle case allez-vous jouer ?\n")
                     else:
                         listSpec.append(newS)
-                        newS.send(b"Bonjour, deux joueurs jouent deja, vous etes spectateur\n")
+                        newS.send(str.encode("Bonjour, deux joueurs jouent deja, vous etes spectateur\n"))
                         
                 if joueur1 != None and joueur2 != None:
                     if turnCount == 0:
-                        joueur1.send(bytearray(grids[J1].displayInOneString(), 'utf8'))
-                        joueur1.send(b"Joueur 1, quelle case allez-vous jouer ?\n")
+                        joueur1.send(str.encode(grids[J1].displayInOneString()))
+                        joueur1.send(str.encode("Joueur 1, quelle case allez-vous jouer ?\n"))
                     print("Debut tour de jeu")
                     #joueur1.send(b"En attente du joueur " + bytearray(str(current_player) + b"...\n", 'utf8'))
                     #joueur1.send(b"A toi de jouer, joueur " + str(current_player) + b" !\n")
@@ -60,13 +58,13 @@ def main():
                         shot = 10
                         while shot < 0 or shot >= NB_CELLS:
                             #joueur1.send(b"Joueur 1, quelle case allez-vous jouer ?\n")
-                            shot = int(joueur1.recv(10))
+                            shot = int(joueur1.recv(64))
                         print("Le joueur 1 a joué la case", int(shot))
                     elif current_player == J2:
                         shot = 10
                         while shot < 0 or shot >= NB_CELLS:
                             #joueur2.send(b"Joueur 2, quelle case allez-vous jouer ?\n")
-                            shot = int(joueur2.recv(10))
+                            shot = int(joueur2.recv(64))
                         print("Le joueur 2 a joué la case", int(shot))						
                     if (grids[0].cells[shot] != EMPTY):
                         grids[current_player].cells[shot] = grids[0].cells[shot]
@@ -75,26 +73,26 @@ def main():
                         grids[0].play(current_player, shot)
                         current_player = current_player%2+1
                     if current_player == J1:
-                        joueur1.send(bytearray(grids[J1].displayInOneString(), 'utf8'))
-                        joueur1.send(b"Joueur 1, quelle case allez-vous jouer ?\n")
+                        joueur1.send(str.encode(grids[J1].displayInOneString()))
+                        joueur1.send(str.encode("Joueur 1, quelle case allez-vous jouer ?\n"))
                     else:
-                        joueur2.send(bytearray(grids[J2].displayInOneString(), 'utf8'))
-                        joueur2.send(b"Joueur 2, quelle case allez-vous jouer ?\n")
+                        joueur2.send(str.encode(grids[J2].displayInOneString()))
+                        joueur2.send(str.encode("Joueur 2, quelle case allez-vous jouer ?\n"))
                     grids[0].display()
                     for spec in listSpec:
-                        spec.send(bytearray(grids[0].displayInOneString(), 'utf8'))
+                        spec.send(str.encode(grids[0].displayInOneString()))
                     turnCount = turnCount +1
         print("game over")
-        joueur1.send(bytearray(grids[0].displayInOneString(), 'utf8'))
-        joueur2.send(bytearray(grids[0].displayInOneString(), 'utf8'))
+        joueur1.send(str.encode(grids[0].displayInOneString()))
+        joueur2.send(str.encode(grids[0].displayInOneString()))
         if grids[0].gameOver() == J1:
-            joueur1.send(b"You WIN !\n")
-            joueur2.send(b"You LOOSE !\n")
+            joueur1.send(str.encode("You WIN !\n"))
+            joueur2.send(str.encode("You LOOSE !\n"))
         else:
-            joueur1.send(b"You LOOSE !\n")
-            joueur2.send(b"You WIN !\n")
+            joueur1.send(str.encode("You LOOSE !\n"))
+            joueur2.send(str.encode("You WIN !\n"))
             
-        joueur1.send(b"Voulez-vous rejouez?(y/n)\n")
+        joueur1.send(str.encode("Voulez-vous rejouez?(y/n)\n"))
         answer = joueur1.recv(1)
         print(answer)
         if answer == b'y':
