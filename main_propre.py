@@ -84,10 +84,13 @@ def main():
             joueur1.send(str.encode("You WIN !\n"))
             joueur2.send(str.encode("You LOOSE !\n"))
             scorej1 = scorej1 + 1
-        else:
+        elif grids[0].gameOver() == J2:
             joueur1.send(str.encode("You LOOSE !\n"))
             joueur2.send(str.encode("You WIN !\n"))
             scorej2 = scorej2 + 1
+        else:
+            joueur1.send(str.encode("DRAW !\n"))
+            joueur2.send(str.encode("DRAW !\n"))            
 
         joueur1.send(str.encode("Voulez-vous rejouez?(y/n)\n"))
         answer = joueur1.recv(1)
